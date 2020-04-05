@@ -1,6 +1,12 @@
-# mltaskcalendar
+# ML Calendar (Name subject to change)
 
-A new Flutter project.
+This project aims to create an app that uses ML/AI to schedule day to day tasks for users in ways to improve productivity.
+
+Contributors:
+Amogh Mishra,
+Nikhil Nair,
+Panav Munshi, and
+Raghav Virmani.
 
 ## Getting Started
 
