@@ -1,105 +1,106 @@
 package com.appnamenull.mlscheduler
 
-import android.annotation.SuppressLint
-import android.app.AppOpsManager
 import android.app.usage.UsageStats
-import android.app.usage.UsageStatsManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Process
 import android.provider.Settings
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import java.text.SimpleDateFormat
-import java.util.*
+import com.appnamenull.mlscheduler.Utils.Packages
+import com.appnamenull.mlscheduler.Utils.Permission
 import com.appnamenull.mlscheduler.Utils.StatsCalc
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.util.*
+import kotlin.math.floor
+import kotlin.math.roundToLong
 
 
 class UsageStatsActivity : AppCompatActivity() {
 
     lateinit var usagestatsText: TextView
+    lateinit var fabRefresh: FloatingActionButton
+
+    private var total = 0.0f
+    private var hourRounded : Double = 0.0
+    private var minRounded : Double = 0.0
+    private var startMillis: Long = 0
+    private var timepack : String = ""
+    private val defaultList = arrayOf("com.instagram.android","com.whatsapp","com.android.chrome","com.twitter.android","com.notdoppler.crashofcars")
+
+    private val calendar: Calendar = Calendar.getInstance()
+    private val endMillis = System.currentTimeMillis()
+    private val endresultdate = Date(System.currentTimeMillis())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_usage_stats)
+        fabRefresh = findViewById(R.id.fabRefresh)
         usagestatsText = findViewById(R.id.usagestatsText)
-        if(checkUsageStatePermission()){
+
+        if(Permission.checkUsageStatePermission(applicationContext)){
+            StatsCalc.initAppHelper(applicationContext)
             showUsageStatsx()
         }
         else{
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-            Toast.makeText(this, "Need to request permission", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Need to request permission", Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun showUsageStatsx(){
-        val calendar = Calendar.getInstance()
+    fun onRefreshPressed(view: View?) {
+        timepack = ""
+        usagestatsText.text = timepack
+        StatsCalc.initAppHelper(applicationContext)
+        showUsageStatsx()
+        Toast.makeText(this, "Refreshed", Toast.LENGTH_LONG).show()
+    }
+
+    private fun setTimetoMonthStart(){
         calendar[Calendar.HOUR_OF_DAY] = 0
         calendar[Calendar.MINUTE] = 0
         calendar[Calendar.SECOND] = 0
         calendar[Calendar.MILLISECOND] = 0
-        var startMillis: Long = 0
-        val endMillis = System.currentTimeMillis()
-        val endresultdate = Date(System.currentTimeMillis())
         calendar[Calendar.DAY_OF_MONTH] = 1
         startMillis = calendar.timeInMillis
-        @SuppressLint("SimpleDateFormat") val sdf = SimpleDateFormat("MMM dd,yyyy HH:mm")
+    }
+
+    private fun showUsageStatsx(){
+        setTimetoMonthStart()
         val startresultdate = Date(startMillis)
-        println("From " + sdf.format(startresultdate))
-        println("To " + sdf.format(endresultdate))
-        val appPkg : String = "com.instagram.android"
-        val lUsageStatsMap: Map<String, UsageStats> = StatsCalc.getUsageStatsManager1()!!.queryAndAggregateUsageStats(startMillis, endMillis)
-        var total = 0.0f
-        if (lUsageStatsMap.containsKey(appPkg)) {
-            val seconds: Float = lUsageStatsMap[appPkg]!!.totalTimeInForeground / 1000.toFloat()
-            val minutes = seconds / 60
-            val hours = minutes / 60
-            total = hours
+        val endresultdate = Date(System.currentTimeMillis())
+        val usageStatsMap: Map<String, UsageStats> = StatsCalc.getUsageStatsManager1().queryAndAggregateUsageStats(startMillis, endMillis)
+        val appList : MutableList<String> = Packages.getAllPackages(applicationContext)
+        val appTimeList = mutableListOf<String>()
+        for (element in appList){
+            val appPkg: String = element
+            if (usageStatsMap.containsKey(appPkg)) {
+                val seconds: Float = usageStatsMap[appPkg]!!.totalTimeInForeground / 1000.toFloat()
+                val minutes = seconds / 60
+                val hours = minutes / 60
+                total = hours
+                hourRound(100.0)
+                minCalc()
+                appTimeList.add("${floor(hourRounded).toInt()}:${minRounded.toInt()}")
+//                if(total > 0)
+//                    timepack += ("$appPkg :\t${floor(hourRounded).toInt()} hours ${minRounded.toInt()} minutes\n")
+            }
         }
-        usagestatsText.text = total.toString()
-    }
-
-    fun showUsageStats(){
-        val usageStatsManager: UsageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        val cal: Calendar = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 0)
-        cal.set(Calendar.MINUTE, 0)
-        cal.set(Calendar.SECOND, 0)
-        cal.set(Calendar.MILLISECOND, 0)
-        val time : String = SimpleDateFormat("yyyy-MM-dd hh:mm").format(cal.time);
-        cal.add(Calendar.DAY_OF_MONTH, -1)
-        val time1 : String = SimpleDateFormat("yyyy-MM-dd hh:mm").format(cal.time);
-        cal.set(Calendar.DAY_OF_MONTH, 1)
-        val beginTime = cal.getTimeInMillis()
-        val currentTime = System.currentTimeMillis()
-        val queryUsageStats : List<UsageStats> = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, beginTime, currentTime)
-        var statsdata = ""
-        for(i in queryUsageStats.indices){
-                statsdata = statsdata + "Package Name : " + queryUsageStats[i].packageName + "\nLast Time Used : " + convertTime(queryUsageStats[i].lastTimeUsed) +
-                    "\nFirst Time Stamp : " + convertTime(queryUsageStats[i].firstTimeStamp) +
-                            "\nLast Time Stamp : " + convertTime(queryUsageStats[i].lastTimeStamp) +
-                                "\nTotal Time in FG : " + convertTime2(queryUsageStats[i].totalTimeInForeground) + "\n\n"
+        for (i in 0 until appList.size){
+            if(appTimeList[i] != "0:0")
+                timepack += appList[i]+" - "+appTimeList[i]+"\n"
         }
-        usagestatsText.text = statsdata
+        usagestatsText.text = timepack
     }
 
-    private  fun  convertTime(lastTimeUsed: Long): String{
-        val date: Date = Date(lastTimeUsed)
-        val format : SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.ENGLISH)
-        return format.format(date)
+    private fun hourRound(d: Double){
+        hourRounded = ((total * d).roundToLong()/d)
     }
 
-    private  fun  convertTime2(lastTimeUsed: Long): String{
-        val date = Date(lastTimeUsed)
-        val format = SimpleDateFormat("hh:mm", Locale.ENGLISH)
-        return format.format(date)
+    private fun minCalc(){
+        minRounded = hourRounded- floor(hourRounded)
+        minRounded = ((minRounded * 100.0).roundToLong()/100.0)*60.0
     }
 
-    private fun checkUsageStatePermission() : Boolean{
-        val appOpsManager = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val mode = appOpsManager.checkOpNoThrow( AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName )
-        return mode == AppOpsManager.MODE_ALLOWED
-    }
 }
