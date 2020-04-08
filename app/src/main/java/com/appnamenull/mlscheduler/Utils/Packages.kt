@@ -9,8 +9,8 @@ object Packages {
     private val appnameList = mutableListOf<String>()
 
     private fun packagetoName(context: Context, packageName: String){
-        val packageManager : PackageManager = context.packageManager;
-        val appName : String = packageManager.getApplicationLabel(packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)).toString();
+        val packageManager : PackageManager = context.packageManager
+        val appName : String = packageManager.getApplicationLabel(packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)).toString()
         appnameList.add(appName)
     }
 

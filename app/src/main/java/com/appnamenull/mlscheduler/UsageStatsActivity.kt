@@ -49,7 +49,7 @@ class UsageStatsActivity : AppCompatActivity() {
         }
     }
 
-    fun onRefreshPressed(view: View?) {
+    fun onRefreshPressed() {
         timepack = ""
         usagestatsText.text = timepack
         StatsCalc.initAppHelper(applicationContext)
@@ -68,8 +68,6 @@ class UsageStatsActivity : AppCompatActivity() {
 
     private fun showUsageStatsx(){
         setTimetoMonthStart()
-        val startresultdate = Date(startMillis)
-        val endresultdate = Date(System.currentTimeMillis())
         val usageStatsMap: Map<String, UsageStats> = StatsCalc.getUsageStatsManager1().queryAndAggregateUsageStats(startMillis, endMillis)
         val appList : MutableList<String> = Packages.getAllPackages(applicationContext)
         val appTimeList = mutableListOf<String>()

@@ -15,5 +15,5 @@ object StatsCalc {
 
     fun initAppHelper(context: Context) { usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager }
 
-    fun getUsageStatsManager1(): UsageStatsManager { return com.appnamenull.mlscheduler.Utils.StatsCalc.usageStatsManager }
+    fun getUsageStatsManager1(): UsageStatsManager { return usageStatsManager }
 }
