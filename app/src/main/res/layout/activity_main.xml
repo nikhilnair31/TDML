@@ -14,6 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:visibility="invisible"
+        app:backgroundTint="#40D8CA"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
@@ -21,15 +30,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_header"
+        app:itemTextColor="#000000"
         app:menu="@menu/menu_drawer" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|end"
-        android:layout_margin="16dp"
-        app:backgroundTint="#7F5AC1"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
