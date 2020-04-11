@@ -55,20 +55,4 @@ object PackageandTimeList {
         return listofAppFGTime
     }
 
-    fun getTotalTimeList(apppackageList : MutableList<String>, statMap : Map<String, UsageStats>): Float{
-        var total : Float = 0.0F
-        for (element in apppackageList){
-            val appPkg: String = element
-            if (statMap.containsKey(appPkg)) {
-                val seconds: Float = statMap[appPkg]!!.totalTimeInForeground / 1000.toFloat()
-                val minutes = seconds / 60
-                val hours = minutes / 60
-                total += hours
-                if(hours >= 0.01F)
-                    println("appPkg: $appPkg\t\thours : $hours\t\ttotal : $total")
-            }
-        }
-        println("total: $total")
-        return total
-    }
 }
