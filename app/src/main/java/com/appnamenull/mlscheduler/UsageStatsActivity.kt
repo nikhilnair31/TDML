@@ -1,5 +1,6 @@
 package com.appnamenull.mlscheduler
 
+import android.app.AlertDialog
 import android.app.AppOpsManager
 import android.app.usage.NetworkStats
 import android.app.usage.NetworkStatsManager
@@ -7,21 +8,24 @@ import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Process
 import android.provider.Settings
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.appnamenull.mlscheduler.Utils.Cloud
 import com.appnamenull.mlscheduler.Utils.Saving
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_usage_stats.*
+import kotlinx.android.synthetic.main.new_task.view.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 //Use this class to potentialy get app Icon, Name, Launches etc.
 internal class AppUsageInfo(var packageName: String) {
@@ -33,11 +37,6 @@ internal class AppUsageInfo(var packageName: String) {
 
 class UsageStatsActivity : AppCompatActivity() {
 
-    //UI vars
-    lateinit var usagestatsText: TextView
-    lateinit var txtDate: TextView
-    private lateinit var fabRefresh: FloatingActionButton
-
     //Other vars
     private var starttime : Long = 0
     private var endtime : Long = 0
@@ -48,27 +47,26 @@ class UsageStatsActivity : AppCompatActivity() {
     private val hourlyTime = mutableListOf<Int>()
     private val hourlyFGTime = mutableListOf<Int>()
     private val hourlyTxBytes = mutableListOf<Int>()
+    private val tasksList = mutableListOf<String>()
     private  val userUsage = listOf("28,22,34,0,0,0,0,0,7,20,22,21,22,21,32,22,28,13,24,18,15,31,30,28,22,3,4,0,0,0,0,0,7,20,22,21,22,21,32,22,28,13,24,18,15,31,30," +
                                     "28,22,3,4,0,0,0,0,0,7,20,22,21,22,21,32,22,28,13,24,18,15,31,30,28,22,3,4,0,0,0,0,0,7,20,22,21,22,21,32,22,28,13,24,18,15,31,30," +
                                     "28,22,3,4,0,0,0,0,0,7,20,22,21,22,21,32,22,28,13,24,18,15,31,30,28,22,3,4,0,0,0,0,0,7,20,22,21,22,21,32,22,28,13,24,18,15,31,30," +
                                     "28,22,3,4,0,0,0,0,0,7,20,22,21,22,21,32,22,28,13,24,18,15,31,30,28,22,3,4,0,0,0,0,0,7,20,22,21,22,21,32,22,28,13,24,18,15,31,30," +
                                     "28,22,3,4,0,0,0,0,0,7,20,22,21,22,21,32,22,28,13,24,18,15,31,30")
-    val userUsageMap = userUsage.associateWith { it }
+    private val userUsageMap = userUsage.associateWith { it }
 
     //Shared Prefs
     private val mPreferences by lazy { getSharedPreferences("firstTimeCheck", Context.MODE_PRIVATE) }
     private val hourlyTimePref by lazy { getSharedPreferences("hourlyTimePref", Context.MODE_PRIVATE) }
     private val hourlyFGTimePref by lazy { getSharedPreferences("hourlyFGTimePref", Context.MODE_PRIVATE) }
     private val hourlyTxBytesPref by lazy { getSharedPreferences("hourlyTxBytesPref", Context.MODE_PRIVATE) }
+    private val tasksandtimePref by lazy { getSharedPreferences("tasksandtimePref", Context.MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_usage_stats)
 
         //Basic var init
-        fabRefresh = findViewById(R.id.fabUpload)
-        usagestatsText = findViewById(R.id.usagestatsText)
-        txtDate = findViewById(R.id.txtDate)
         mUsageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         networkStatsManager = getSystemService(Context.NETWORK_STATS_SERVICE) as NetworkStatsManager
 
@@ -88,6 +86,12 @@ class UsageStatsActivity : AppCompatActivity() {
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
     }
 
+    //To upload data to Firebase, add new task and clear all lists and shared prefs.
+    fun onUploadPressed(view: View) = Cloud.pushString(txtDate.text as String, usagestatsText.text as String)
+    fun onAddPressed(view: View) = addTask()
+    fun onClearPressed(view: View) = clearAll()
+    fun onTaskClickPressed(view: View) = Snackbar.make(view, "Clicked this task.", Snackbar.LENGTH_SHORT)
+
     //Obvious
     private fun checkUsageStatePermission() : Boolean{
         val appOpsManager = this.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
@@ -98,20 +102,57 @@ class UsageStatsActivity : AppCompatActivity() {
     //Checks if app's running for first time, thus either gets total usage till 9 days ago or gets usage in time difference
     private fun initRun() {
         println("firstTime : ${mPreferences.getBoolean("firstTimeCheck", true)}")
+        val arrayAdapter : ArrayAdapter<String> = ArrayAdapter(this, R.layout.custom_textview, tasksList)
+        listView.adapter = arrayAdapter
         if (mPreferences.getBoolean("firstTimeCheck", true))
             setupInit()
         else {
             Toast.makeText(this, "getAdditionalHours", Toast.LENGTH_SHORT).show()
-            Saving.loadLists(hourlyTimePref, hourlyTime, "HourlyTime", hourlyFGTimePref, hourlyFGTime, "HourlyFGTime", hourlyTxBytesPref, hourlyTxBytes,  "HourlyTxBytes")
+            Saving.loadLists(hourlyTimePref, hourlyTime, "HourlyTime", hourlyFGTimePref, hourlyFGTime, "HourlyFGTime",
+                hourlyTxBytesPref, hourlyTxBytes,  "HourlyTxBytes", tasksandtimePref, tasksList, "tasksandtimePref")
             getAdditionalHours()
-            Saving.clearLists(hourlyTimePref, "hourlyTimePref", hourlyFGTimePref, "hourlyFGTimePref", hourlyTxBytesPref, "HourlyTxBytes")
-            Saving.saveLists(hourlyTimePref, hourlyTime, "HourlyTime", hourlyFGTimePref, hourlyFGTime, "HourlyFGTime", hourlyTxBytesPref, hourlyTxBytes, "HourlyTxBytes")
+            Saving.clearLists(hourlyTimePref, "hourlyTimePref", hourlyFGTimePref, "hourlyFGTimePref",
+                hourlyTxBytesPref, "HourlyTxBytes", tasksandtimePref, "tasksandtimePref")
+            Saving.saveLists(hourlyTimePref, hourlyTime, "HourlyTime", hourlyFGTimePref, hourlyFGTime, "HourlyFGTime",
+                hourlyTxBytesPref, hourlyTxBytes, "HourlyTxBytes", tasksandtimePref, tasksList, "tasksandtimePref")
         }
     }
 
-    //To upload data to Firebase and add new task
-    fun onUploadPressed(view: View) = Cloud.pushString(txtDate.text as String, usagestatsText.text as String)
-    fun onAddPressed(view: View) = Toast.makeText(this, "onAddPressed", Toast.LENGTH_LONG).show()
+    //Clear lists and usage prefs
+    private fun clearAll(){
+        Toast.makeText(this, "Cleared All and Reloading Data", Toast.LENGTH_LONG).show()
+        hourlyFGTime.clear()
+        hourlyTime.clear()
+        hourlyTxBytes.clear()
+        println("Post Prefs HOURLYTIME : ${hourlyTime}\nHOURLYFGTIME : ${hourlyFGTime}\nHOURLYTXBYTES : ${hourlyTxBytes}\n")
+        println("Post Clearing HOURLYTIME : ${hourlyTimePref.getString("HourlyTime", "")}\nHOURLYFGTIME : ${hourlyFGTimePref.getString("HourlyFGTime", "")}\nHOURLYTXBYTES : ${hourlyTxBytesPref.getString("HourlyTxBytes", "")}\n")
+        Saving.clearLists(hourlyTimePref, "hourlyTimePref", hourlyFGTimePref, "hourlyFGTimePref",
+            hourlyTxBytesPref, "HourlyTxBytes", tasksandtimePref, "tasksandtimePref")
+        getTotalUsageOverTime()
+        Saving.saveLists(hourlyTimePref, hourlyTime, "HourlyTime", hourlyFGTimePref, hourlyFGTime, "HourlyFGTime",
+            hourlyTxBytesPref, hourlyTxBytes, "HourlyTxBytes", tasksandtimePref, tasksList, "tasksandtimePref")
+    }
+
+    //Create new task
+    private fun addTask(){
+        //Toast.makeText(this, "Added Task.", Toast.LENGTH_LONG).show()
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.new_task, null)
+        val mBuilder = AlertDialog.Builder(this, R.style.DialogTheme).setView(mDialogView)
+        val  mAlertDialog = mBuilder.show()
+        mDialogView.btnDialogAddTask.setOnClickListener {
+            mAlertDialog.dismiss()
+            val taskname = mDialogView.taskname.text.toString()
+            val taskdate = mDialogView.taskdate.text.toString()
+            val taskStr = "$taskname-$taskdate"
+            tasksList.add((taskStr))
+            val arrayAdapter : ArrayAdapter<String> = ArrayAdapter(this, R.layout.custom_textview, tasksList)
+            listView.adapter = arrayAdapter
+            println("tasksList : $tasksList")
+            Saving.saveLists(hourlyTimePref, hourlyTime, "HourlyTime", hourlyFGTimePref, hourlyFGTime, "HourlyFGTime",
+                hourlyTxBytesPref, hourlyTxBytes, "HourlyTxBytes", tasksandtimePref, tasksList, "tasksandtimePref")
+        }
+        mDialogView.btnDialogCancelTask.setOnClickListener {mAlertDialog.dismiss()}
+    }
 
     //To get usage in time from last use of app to put into list
     private fun getAdditionalHours(){
@@ -137,8 +178,6 @@ class UsageStatsActivity : AppCompatActivity() {
 
     private fun getTotalUsageOverTime() {
         var str = ""
-        usagestatsText.text = ""
-        txtDate.text = ""
         hourlyFGTime.clear()
         hourlyTime.clear()
         hourlyTxBytes.clear()
@@ -209,7 +248,8 @@ class UsageStatsActivity : AppCompatActivity() {
         mPreferences.edit().putBoolean("firstTimeCheck", false).apply()
         println("setupInit userUsageMapE : $userUsageMap")
         getTotalUsageOverTime()
-        Saving.saveLists(hourlyTimePref, hourlyTime, "HourlyTime", hourlyFGTimePref, hourlyFGTime, "HourlyFGTime", hourlyTxBytesPref, hourlyTxBytes, "HourlyTxBytes")
+        Saving.saveLists(hourlyTimePref, hourlyTime, "HourlyTime", hourlyFGTimePref, hourlyFGTime, "HourlyFGTime",
+            hourlyTxBytesPref, hourlyTxBytes, "HourlyTxBytes", tasksandtimePref, tasksList, "tasksandtimePref")
     }
 
     private fun hourlyTxBytesWM(): Int{
