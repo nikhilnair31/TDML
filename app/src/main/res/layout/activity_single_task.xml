@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SingleTaskActivity">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        android:elevation="0dp"
+        android:onClick="goBack"
+        android:tint="@color/colorPrimaryText"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:borderWidth="0dp"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_arrow_back_white_24dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabDel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        android:elevation="0dp"
+        android:onClick="deleteTask"
+        android:tint="@color/colorPrimaryText"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:borderWidth="0dp"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_delete_white_24dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:clickable="true"
+        android:onClick="doneEditingTask"
+        app:backgroundTint="@color/colorAccent"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_done_white_24dp" />
+
+    <Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="0dp"
+        app:elevation="0dp">
+    </Toolbar>
+
+    <EditText
+        android:id="@+id/txtTaskName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/comfortaa_light"
+        android:hint="Task Name"
+        android:inputType="textMultiLine|text|textImeMultiLine"
+        android:paddingStart="8dp"
+        android:textColor="@color/colorPrimaryText"
+        android:textColorHint="@color/colorSecondaryText"
+        android:textSize="28sp" />
+
+    <EditText
+        android:id="@+id/txtTaskDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTaskName"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toEndOf="@+id/imageView2"
+        android:background="@android:color/transparent"
+        android:fontFamily="sans-serif-light"
+        android:hint="Add details"
+        android:inputType="textMultiLine|text|textImeMultiLine"
+        android:textColor="@color/colorSecondaryText"
+        android:textColorHint="@color/colorTertiaryText"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/txtTaskDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTaskDetail"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_toEndOf="@+id/imageView3"
+        android:background="@android:color/transparent"
+        android:fontFamily="sans-serif-light"
+        android:hint="Add date/time"
+        android:textColor="@color/colorSecondaryText"
+        android:textColorHint="@color/colorTertiaryText"
+        android:textIsSelectable="false" />
+
+    <TextView
+        android:id="@+id/txtTaskPred"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTaskDate"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_toEndOf="@+id/imageView3"
+        android:background="@android:color/transparent"
+        android:fontFamily="sans-serif-light"
+        android:hint="Predicted best time."
+        android:textColor="@color/colorTertiaryText"
+        android:textColorHint="@color/colorTertiaryText"
+        android:textIsSelectable="false" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTaskName"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:padding="0dp"
+        android:paddingStart="8dp"
+        android:tint="@color/colorSecondaryText"
+        app:srcCompat="@drawable/ic_short_text_white_24dp" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTaskDetail"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:onClick="onDateSelect"
+        android:padding="0dp"
+        android:paddingStart="8dp"
+        android:tint="@color/colorSecondaryText"
+        app:srcCompat="@drawable/ic_date_range_white_24dp" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView3"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:onClick="onDateSelect"
+        android:padding="0dp"
+        android:paddingStart="8dp"
+        android:tint="@color/colorSecondaryText"
+        app:srcCompat="@drawable/ic_trending_up_white_24dp" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graphview"
+        android:layout_width="match_parent"
+        android:layout_height="250dip"
+        android:layout_below="@+id/txtTaskPred"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:padding="64dp"
+        android:visibility="visible"
+        tools:visibility="visible" />
+
+</RelativeLayout>

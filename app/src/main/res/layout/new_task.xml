@@ -1,95 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlNewTask"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="8dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <EditText
+        android:id="@+id/taskname"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="0dp"
+        android:autofillHints="What's the task?"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/comfortaa_light"
+        android:hint="New task"
+        android:textColorHint="@color/colorSecondaryText"
+        android:inputType="text"
+        android:paddingStart="16sp"
+        android:paddingEnd="16sp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/colorSecondaryText"
+        android:textColorHighlight="@color/colorAccentOther"
+        android:textColorLink="@color/colorAccentOther"
+        android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/txtTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="64dp"
-            android:baselineAligned="false"
-            android:fontFamily="@font/roboto_thin"
-            android:text="Add Task"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <EditText
+        android:id="@+id/txtTaskDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/taskname"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0sp"
+        android:layout_marginTop="8sp"
+        android:layout_marginEnd="0sp"
+        android:autofillHints="What's the task?"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/comfortaa_light"
+        android:hint="Add details"
+        android:inputType="textMultiLine|text|textImeMultiLine"
+        android:paddingStart="16sp"
+        android:paddingEnd="16sp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/colorSecondaryText"
+        android:textColorHint="@color/colorTertiaryText"
+        android:textSize="14sp"
+        android:visibility="gone" />
 
-        <EditText
-            android:id="@+id/taskname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="64dp"
-            android:autofillHints="What's the task?"
-            android:fontFamily="@font/roboto_thin"
-            android:inputType="text"
-            android:textAlignment="center"
-            android:textColor="@color/colorSecondaryText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+    <EditText
+        android:id="@+id/txtTaskDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTaskDetails"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:clickable="false"
+        android:focusableInTouchMode="false"
+        android:fontFamily="@font/comfortaa_light"
+        android:hint="Date"
+        android:inputType="datetime"
+        android:paddingStart="16sp"
+        android:paddingEnd="16sp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/colorSecondaryText"
+        android:textColorHint="@color/colorTertiaryText"
+        android:textSize="12sp"
+        android:visibility="gone" />
 
-        <EditText
-            android:id="@+id/taskdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="64dp"
-            android:autofillHints="When's the task?"
-            android:fontFamily="@font/roboto_thin"
-            android:inputType="date|time"
-            android:textAlignment="center"
-            android:textColor="@color/colorSecondaryText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/taskname" />
+    <ImageButton
+        android:id="@+id/btnDialogDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTaskDate"
+        android:layout_marginStart="8sp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/btnDialogDateTime"
+        android:backgroundTint="@android:color/transparent"
+        android:tint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_short_text_white_24dp"
+        tools:visibility="visible" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/taskdate">
+    <ImageButton
+        android:id="@+id/btnDialogDateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTaskDate"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0sp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@android:color/transparent"
+        android:tint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_date_range_white_24dp"
+        tools:visibility="visible" />
 
-            <Button
-                android:id="@+id/btnDialogAddTask"
-                style="@style/Base.Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add" />
+    <ImageButton
+        android:id="@+id/btnDialogAddTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTaskDate"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="0sp"
+        android:backgroundTint="#00000000"
+        android:tint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_add_white_24dp"
+        tools:visibility="visible" />
 
-            <Button
-                android:id="@+id/btnDialogCancelTask"
-                style="@style/Base.Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cancel" />
-
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
+</RelativeLayout>

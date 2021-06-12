@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorBackground">#1E1E1E</color>
-    <color name="colorPrimary">#454545</color>
-    <color name="colorPrimaryDark">#232323</color>
-    <color name="colorAccent">#931F46</color>
+    <color name="colorBackground">#0A0A0A</color>
+    <color name="colorPrimary">#E1E1E1</color>
+    <color name="colorPrimaryDark">#0F0F0F</color>
+    <color name="statusBarColor">#141414</color>
+    <color name="colorAccent">#6BD8CE</color>
+    <color name="colorAccentOther">#97FFEB</color>
+    <color name="colorAccentAnother">#FE2D4C</color>
     <color name="colorPrimaryText">#FFFFFF</color>
-    <color name="colorSecondaryText">#E1E1E1</color>
+    <color name="colorSecondaryText">#D9B9B9B9</color>
+    <color name="colorTertiaryText">#B3969696</color>
+
+    <color name="colorTransparent">#00000000</color>
+
+<!--    <color name="colorBackground">#FFFFFF</color>-->
+<!--    <color name="colorPrimary">#E1E1E1</color>-->
+<!--    <color name="colorPrimaryDark">#FAFAFA</color>-->
+<!--    <color name="statusBarColor">#EBEBEB</color>-->
+<!--    <color name="colorAccent">#FE2D4C</color>-->
+<!--    <color name="colorAccentOther">#6BD8CE</color>-->
+<!--    <color name="colorPrimaryText">#191919</color>-->
+<!--    <color name="colorSecondaryText">#D9373737</color>-->
+<!--    <color name="colorTertiaryText">#B3555555</color>-->
 </resources>

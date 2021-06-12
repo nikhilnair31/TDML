@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-light"
+        android:text="Please login"
+        android:textAlignment="center"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="30sp" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="512dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTintMode="multiply"
+        android:hapticFeedbackEnabled="true"
+        app:buttonSize="icon_only"
+        tools:visibility="visible" />
+
+    <ImageButton
+        android:id="@+id/btnNext"
+        android:layout_width="wrap_content"
+        android:layout_height="52dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="176dp"
+        android:backgroundTint="@color/colorPrimaryText"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:scaleX="-1"
+        android:tint="@color/colorPrimaryDark"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_arrow_back_white_24dp"
+        tools:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/sign_in_anon"
+        android:layout_width="wrap_content"
+        android:layout_height="52dp"
+        android:layout_below="@+id/sign_in_google"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorPrimaryText"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:tint="@color/colorPrimaryDark"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_perm_identity_white_24dp"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp"
+        android:fontFamily="@font/comfortaa_light"
+        android:text="Welcome"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="50sp" />
+
+</RelativeLayout>
