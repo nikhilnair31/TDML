@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/customTV"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:clickable="true"
+    android:contextClickable="true"
+    android:gravity="start"
+    android:onClick="onAddPressed"
+    android:paddingVertical="10dp"
+    android:textColor="@color/colorSecondaryText"
+    android:textSize="16sp"
+    android:focusable="true" />

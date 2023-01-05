@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "757688213688",
+    "firebase_url": "https://ml-task-scheduler-nn31.firebaseio.com",
+    "project_id": "ml-task-scheduler-nn31",
+    "storage_bucket": "ml-task-scheduler-nn31.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757688213688:android:feab1534b1c64a9d00544d",
+        "android_client_info": {
+          "package_name": "com.appnamenull.mlscheduler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757688213688-g1lo27smrsblh38lqa87lr85peslal84.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpDfR8zNRXUeu6g6r37kpJreC-iMBSQEo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757688213688-g1lo27smrsblh38lqa87lr85peslal84.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
